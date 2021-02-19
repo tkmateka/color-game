@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Game</title>
+    <!-- App Styles -->
+    <style>
+        body {
+            text-align: center;
+        }
+
+        .hide {
+            display: none;
+        }
+        .circles {
+            cursor: pointer;
+        }
+        .displayFlex {
+            display: flex;
+            justify-content: center;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- HTML -->
+    <h1 id="colorToSelect"></h1>
+    <h3 id="test">Please select the above RGB color</h3>
+    <p id="winOrLoose">You have <span id="count"></span> chances left.</p>
+
+    <div class="displayFlex">
+        <div class="circles" id="col1" onclick="checkIfWin('col1')"></div>
+        <div class="circles" id="col2" onclick="checkIfWin('col2')"></div>
+    </div>
+    <div class="displayFlex">
+        <div class="circles" id="col3" onclick="checkIfWin('col3')"></div>
+    </div>
+    <div class="displayFlex">
+        <div class="circles" id="col4" onclick="checkIfWin('col4')"></div>
+        <div class="circles" id="col5" onclick="checkIfWin('col5')"></div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Grab all the circles with ClassName
+        var circles = document.getElementsByClassName('circles');
+
+        // Store each Circle by id
+        var col1 = document.getElementById('col1');
+        var col2 = document.getElementById('col2');
+        var col3 = document.getElementById('col3');
+        var col4 = document.getElementById('col4');
+        var col5 = document.getElementById('col5');
+
+        // Reset all colors
+        for (var i = 0; i < circles.length; i++) {
+            // Creating a circle
+            circles[i].style.width = "50px";
+            circles[i].style.height = "50px";
+            circles[i].style.borderRadius = "50%";
+            circles[i].style.margin = "2em";
+
+            // Set random RGB colors
+            var c1 = Math.floor(Math.random() * 255) + 1;
+            var c2 = Math.floor(Math.random() * 255) + 1;
+            var c3 = Math.floor(Math.random() * 255) + 1;
+
+            window[`col${i + 1}`].style.backgroundColor = `rgb(${c1},${c2},${c3})`;
+        }
+
+        // Game settings
+        var chances = 3;
+        var winningIndex = Math.floor(Math.random() * 5) + 1;
+        var winningColor = window[`col${winningIndex}`].style.backgroundColor;
+
+        // Display winning RGB text
+        document.getElementById('colorToSelect').innerHTML = winningColor;
+        // Display remaining chances
+        document.getElementById('count').innerHTML = chances;
+
+        // Main function of the game
+        function checkIfWin(id) {
+            // Check if user still deserve to play
+            if (chances >= 1) {
+                // Check if the user has won or not
+                if (winningColor == window[id].style.backgroundColor) {
+                    // If user won
+                    alert('You fucken WON bro...');
+                    location.reload();
+                } else {
+                    // If user lost
+                    window[id].classList.add("hide");
+                    chances--;
+                    document.getElementById('count').innerHTML = chances;
+                    if (chances < 1) {
+                        document.getElementById('winOrLoose').innerHTML += "YOU LOOSE";
+                    }
+                }
+            } else {
+                // If user doesn't have chances left
+                alert('You fucken lost bro, just reload the fucken page...');
+                location.reload();
+            }
+        }
+    </script>
+</body>
+
+</html>
